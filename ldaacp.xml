@@ -1,0 +1,70 @@
+ <tool id="ldaacp" name="LDA clustering" version="1.0.2">
+      <requirements>
+        <container type="docker">galaxyprod_visualisationlda</container>
+      </requirements>
+      <description>on a “document × term” datafile</description>
+      <command><![CDATA[
+         main $input
+            #if $clusters
+            $clusters
+            #end if
+            $inputmeta
+      ]]></command>
+      <inputs>
+        <param name="input" type="data" format="tabular" label="Fichier source “document × terme”" />
+        <param name="inputmeta" type="data" format="tabular" label="Fichier des métadonnées “document × terme” au format tsv" />
+        <param name="clusters" type="integer" value="" min="2" max="200" label="Nombre de clusters" />
+      </inputs>
+      <outputs>
+          <data name="output" format="json" from_work_dir="coordonnees.json" label="topic_coordinates" />
+      </outputs>
+      <tests>
+        <test>
+          <param name="input" value="ndocDocsMots.txt" />
+          <param name="clusters" value="10" />
+       	  <param name="inputmeta" value="meta.tsv" />
+	  </test>
+      </tests>	
+      <help><![CDATA[
+    Ce programme de clusterisation applique l’algorithme **LDA** — et une **ACP** — sur un fichier de données *“document × terme”*.
+
+    .. class:: warningmark
+
+    Ce fichier de données est formé de 2 colonnes séparées par une tabulation et contenant l’identifiant du document et le terme “indexant” ce document, le tout encodé en UTF-8.
+
+    .. class:: warningmark
+
+    Il y a autant de lignes que de couples *“document — terme”*.
+
+    -----
+
+    **Options**
+
+    Le programme reçoit plusieurs arguments, soit **obligatoires**, soit *optionnels* :
+
+    + **nom du fichier de données** *“document × terme”*
+
+    + **nombre de clusters souhaités(par défaut : 5)**
+
+    -----
+
+    **Données d’entrée**
+
+    Exemple :
+
+    ::
+
+          GS2_0000067	abrupt transition
+          GS2_0000067	apparent contrast
+          GS2_0000067	arc collision
+             ...
+          GS2_0000067	wide variability
+          GS2_0000592	anomalous change
+          GS2_0000592	atomic oxygen
+             ...
+
+    -----
+      ]]></help>
+
+ </tool>
+
